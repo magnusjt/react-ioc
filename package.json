@@ -1,0 +1,27 @@
+{
+  "name": "react-ioc",
+  "version": "1.0.0",
+  "description": "IOC container for react components and more",
+  "main": "index.js",
+  "scripts": {
+    "deps": "npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/magnusjt/react-ioc.git"
+  },
+  "author": "Magnus Jeffs Tovslid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/magnusjt/react-ioc/issues"
+  },
+  "homepage": "https://github.com/magnusjt/react-ioc",
+  "devDependencies": {
+    "babel-core": "^5.8.25",
+    "babel-loader": "^5.3.2",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.11.0"
+  },
+  "dependencies": {}
+}
