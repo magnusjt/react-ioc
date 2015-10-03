@@ -4,13 +4,13 @@ An inversion of control container for React components and other services (exper
 
 ### Advantages
 
-* No passing down a massive amount of props through the component hierarchy.
-  Only pass down what is relevant at any given time. And no need to use the spread operator to achieve this either.
+* No passing down a large amount of service-related props through the component hierarchy
+  (NB: Data-props still need to be passed like normal, since they determine what the render looks like)
 * No global services needed (such as action creators)
 * If you want to replace a component with a dummy component, you can do that from a central location.
   You can even use different elements depending on the platform you're on, just use a different instance
   of the container.
-* If you need to replace a data fetcher, this is also extremely easy since you can simply swap
+* If you need to replace an action creator, this is also extremely easy since you can simply swap
   out a service provider (for example with a dummy).
 * You don't need to import any components or actions into the component file. All that is done from a central location.
 
