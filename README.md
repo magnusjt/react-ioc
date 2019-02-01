@@ -2,6 +2,8 @@
 
 An inversion of control container for React components and other services
 
+See: https://medium.com/@magnusjt/inversion-of-control-and-di-in-reactjs-and-redux-35161fcef847
+
 ### Advantages
 
 * No passing down a large amount of service-related props through the component hierarchy
