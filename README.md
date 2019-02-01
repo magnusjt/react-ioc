@@ -23,7 +23,7 @@ Disadvantages?
 #### Accessing the container
 Access as you would any property on an object:
 
-````
+```jsx
 let service = container.myService;
 let MyElement = container.MyElement;
 
@@ -33,7 +33,7 @@ let MyElement = container.MyElement;
 // Or more elegantly:
 let MyElement = container.MyElement;
 <MyElement myProp={propVal} />
-````
+```
 
 #### Factories
 Factories instantiate a property every time they are accessed.
@@ -58,7 +58,7 @@ We need this because React is responsible for instantiating our elements.
 ### An example, please?
 So let's see an example to understand how this works. It's a good idea to check out the examples folder as well.
 
-````
+```jsx
 import React from 'react';
 import Container from 'react-ioc';
 
@@ -173,4 +173,4 @@ ioc.factory('Counter', function(container){
  Render app from container:
   */
 React.render(<ioc.App />, document.getElementById('app'));
-````
+```
