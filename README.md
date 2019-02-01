@@ -1,6 +1,6 @@
 # react-ioc
 
-An inversion of control container for React components and other services (experimental)
+An inversion of control container for React components and other services
 
 ### Advantages
 
@@ -35,25 +35,9 @@ let MyElement = container.MyElement;
 <MyElement myProp={propVal} />
 ```
 
-#### Factories
-Factories instantiate a property every time they are accessed.
-
-`factory(name, cb)`
-* name - The name you want to access the property by
-* cb - This callback is fired every time the property is accessed. You should return your component here.
-
-#### Services
-Services are exactly the same as factories, except that they return the same instance every time you access it.
+#### Declaring a service
 
 `service(name, cb)`
-
-#### Element binding
-Binding an element constructor is necessary so that the correct arguments are passed to it.
-We need this because React is responsible for instantiating our elements.
-
-`bindElement(element, ...args)`
-* element - This is your React component class name
-* ...args - Any number of args you wish to bind to the element constructor
 
 ### An example, please?
 So let's see an example to understand how this works. It's a good idea to check out the examples folder as well.
@@ -62,39 +46,12 @@ So let's see an example to understand how this works. It's a good idea to check 
 import React from 'react';
 import Container from 'react-ioc';
 
-const ioc = new Container();
-
-/*
-First define some services we want to use.
-Services are only instantiated once
-(i.e. the same instance is always returned)
- */
-ioc.service('fetchAction', function(container){
-	return function(){
-		// Fetch here, and dispatch to stores on success
-        alert('Fetch started!');
-	};
-});
-ioc.service('counter', function(container){
-    let count = 0;
-    return {
-        getCount: function(){
-            return count++;
-        }
-    }
-});
-
 /*
 Define some components
  */
+const makeApp = (UserInfoComponent, CounterComponent) =>  
 class App extends React.Component{
-    constructor(UserInfoComponent, CounterComponent){
-        super();
-        this.elements = {UserInfoComponent, CounterComponent};
-    }
     render(){
-        let {UserInfoComponent, CounterComponent} = this.elements;
-
         return (
             <div>
                 <h4>User info</h4>
@@ -111,6 +68,8 @@ class App extends React.Component{
         );
     }
 }
+
+const makeUserInfo = (fetchAction) => 
 class UserInfo extends React.Component{
     static defaultProps = {
         age: 22
@@ -119,13 +78,12 @@ class UserInfo extends React.Component{
         age: React.PropTypes.number
     };
 
-    constructor(fetchAction){
-        super();
-        this.fetchAction = fetchAction;
+    constructor(props){
+        super(props);
         this.onClick = this.onClick.bind(this);
     }
     onClick(){
-        this.fetchAction();
+        fetchAction();
     }
     render(){
         return (
@@ -137,13 +95,11 @@ class UserInfo extends React.Component{
         );
     }
 }
+
+const makeCounter = counter =>
 class Counter extends React.Component{
-    constructor(counter){
-        super();
-        this.counter = counter;
-    }
     render(){
-        let count = this.counter.getCount();
+        let count = counter.getCount();
         return (
             <div>
                 Counter component has been rendered {count} times before this
@@ -152,6 +108,28 @@ class Counter extends React.Component{
     }
 }
 
+const ioc = new Container();
+
+/*
+First define some services we want to use.
+Services are only instantiated once
+(i.e. the same instance is always returned)
+ */
+ioc.service('fetchAction', container => {
+    return function(){
+        // Fetch here, and dispatch to stores on success
+        alert('Fetch started!');
+    };
+});
+ioc.service('counter', container => {
+    let count = 0;
+    return {
+        getCount: function(){
+            return count++;
+        }
+    }
+});
+
 /*
 Register the components on the container.
 Factories instantiate every time they are called.
@@ -159,15 +137,9 @@ Factories instantiate every time they are called.
 Notice how easily we can switch out the returned components
 with other components?
  */
-ioc.factory('App', function(container){
-    return container.bindElement(App, container.UserInfo, container.Counter);
-});
-ioc.factory('UserInfo', function(container){
-    return container.bindElement(UserInfo, container.fetchAction);
-});
-ioc.factory('Counter', function(container){
-    return container.bindElement(Counter, container.counter);
-});
+ioc.factory('App', c => makeApp(c.UserInfo, c.Counter));
+ioc.factory('UserInfo', c => makeUserInfo(c.fetchAction));
+ioc.factory('Counter', c => makeCounter(c.counter));
 
 /*
  Render app from container:
