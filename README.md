@@ -137,9 +137,9 @@ Factories instantiate every time they are called.
 Notice how easily we can switch out the returned components
 with other components?
  */
-ioc.factory('App', c => makeApp(c.UserInfo, c.Counter));
-ioc.factory('UserInfo', c => makeUserInfo(c.fetchAction));
-ioc.factory('Counter', c => makeCounter(c.counter));
+ioc.service('App', c => makeApp(c.UserInfo, c.Counter));
+ioc.service('UserInfo', c => makeUserInfo(c.fetchAction));
+ioc.service('Counter', c => makeCounter(c.counter));
 
 /*
  Render app from container:
